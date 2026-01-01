@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year 2026 - Greetings from D.G.A.</title>
+    <style>
+        /* --- RESET & BASE STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #020205;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            touch-action: manipulation;
+        }
+        
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+        }
+        
+        /* --- ACCESSIBILITY --- */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #000;
+            color: white;
+            padding: 12px;
+            z-index: 1000;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .skip-link:focus {
+            top: 0;
+            outline: 2px solid #0ff;
+        }
+        
+        /* --- CONTENT AREA --- */
+        .content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: #fff;
+            width: 100%;
+            padding: 20px;
+        }
+        
+        /* --- COUNTDOWN TIMER --- */
+        #timer {
+            font-size: 20vw;
+            font-weight: bold;
+            color: #333;
+            text-shadow: 0 0 10px #fff;
+            transition: color 0.1s ease;
+        }
+        
+        /* --- MAIN MESSAGE --- */
+        #message {
+            display: none;
+        }
+        
+        h1 {
+            font-size: 15vw;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            animation: glitch 2s infinite;
+            text-shadow: 0 0 20px #0ff;
+            line-height: 1;
+        }
+        
+        /* --- TYPEWRITER EFFECT --- */
+        #typewriter-text {
+            font-size: 1.8rem;
+            color: #0f0;
+            letter-spacing: 3px;
+            margin-top: 20px;
+            display: inline-block;
+            border-right: 3px solid #0f0;
+            padding-right: 5px;
+            animation: blink 0.75s step-end infinite;
+            text-shadow: 0 0 10px #0f0;
+            min-height: 2.5rem;
+            font-weight: bold;
+        }
+        
+        /* --- SIGNATURE --- */
+        .signature {
+            position: absolute;
+            bottom: 40px;
+            width: 100%;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            z-index: 20;
+            pointer-events: none;
+            text-transform: uppercase;
+        }
+        
+        .signature span {
+            color: #0ff;
+            text-shadow: 0 0 15px #0ff;
+            font-weight: bold;
+            display: block;
+            margin-top: 5px;
+            font-size: 1.5rem;
+        }
+        
+        /* --- CONTROLS PANEL --- */
+        .controls-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #0ff;
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .control-label {
+            color: #0ff;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .volume-value {
+            color: #0f0;
+            font-size: 0.8rem;
+        }
+        
+        /* --- VOLUME SLIDER --- */
+        .volume-slider {
+            width: 100%;
+            height: 25px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: linear-gradient(to right, #000, #0ff);
+            outline: none;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #0ff;
+            border: 2px solid #000;
+            cursor: pointer;
+            box-shadow: 0 0 10px #0ff;
+        }
+        
+        .volume-slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #0ff;
+            border: 2px solid #000;
+            cursor: pointer;
+            box-shadow: 0 0 10px #0ff;
+        }
+        
+        /* --- CONTROL BUTTONS --- */
+        .control-btn {
+            padding: 10px 15px;
+            background: rgba(0, 255, 255, 0.2);
+            color: #0ff;
+            border: 2px solid #0ff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+        
+        .control-btn:hover {
+            background: rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 15px #0ff;
+            transform: translateY(-2px);
+        }
+        
+        .control-btn:active {
+            transform: translateY(0);
+        }
+        
+        .control-btn.mute-btn {
+            background: rgba(255, 50, 50, 0.2);
+            border-color: #f00;
+            color: #f00;
+        }
+        
+        .control-btn.mute-btn:hover {
+            background: rgba(255, 50, 50, 0.4);
+            box-shadow: 0 0 15px #f00;
+        }
+        
+        .control-btn.mute-btn.active {
+            background: rgba(50, 255, 50, 0.2);
+            border-color: #0f0;
+            color: #0f0;
+        }
+        
+        /* --- ANIMATIONS --- */
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: #0f0; }
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); text-shadow: 0 0 10px #0ff, 0 0 20px #0ff; }
+            20% { transform: translate(-2px, 2px); text-shadow: 2px 2px 0px #f0f, -2px -2px 0px #0ff; }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); text-shadow: 0 0 20px #f00, 0 0 40px #f00; }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); text-shadow: 0 0 10px #0ff, 0 0 80px #0ff; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* --- SOUND WAVE VISUALIZER --- */
+        .sound-wave {
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 50px;
+            z-index: 50;
+        }
+        
+        .wave-bar {
+            position: absolute;
+            bottom: 0;
+            width: 8px;
+            background: #0ff;
+            border-radius: 4px 4px 0 0;
+            animation: wave 1.5s ease-in-out infinite;
+            opacity: 0.7;
+        }
+        
+        @keyframes wave {
+            0%, 100% { height: 5px; }
+            50% { height: 40px; }
+        }
+        
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 768px) {
+            #timer {
+                font-size: 25vw;
+            }
+            
+            h1 {
+                font-size: 20vw;
+                letter-spacing: 5px;
+                animation: glitch 3s infinite;
+            }
+            
+            #typewriter-text {
+                font-size: 1.2rem;
+                min-height: 2rem;
+            }
+            
+            .signature {
+                font-size: 1rem;
+                bottom: 20px;
+            }
+            
+            .signature span {
+                font-size: 1.2rem;
+            }
+            
+            .controls-panel {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                min-width: unset;
+                padding: 10px;
+                animation: slideIn 0.5s ease-out;
+            }
+            
+            .control-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .volume-slider {
+                height: 20px;
+            }
+            
+            .volume-slider::-webkit-slider-thumb {
+                width: 20px;
+                height: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 25vw;
+                letter-spacing: 3px;
+            }
+            
+            #typewriter-text {
+                font-size: 1rem;
+            }
+            
+            .signature span {
+                font-size: 1rem;
+            }
+            
+            .controls-panel {
+                flex-direction: column;
+            }
+            
+            .control-group {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+        
+        /* --- LOADING STATE --- */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #020205;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            color: #0ff;
+            font-size: 2rem;
+            letter-spacing: 3px;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .loading-bar {
+            width: 300px;
+            height: 10px;
+            background: rgba(0, 255, 255, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #000, #0ff);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Accessibility -->
+    <a href="#message" class="skip-link">Skip to main content</a>
+    
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div>Initializing Celebration...</div>
+        <div class="loading-bar">
+            <div class="loading-progress" id="loadingProgress"></div>
+        </div>
+    </div>
+    
+    <!-- Controls Panel -->
+    <div class="controls-panel" id="controlsPanel" style="display: none;">
+        <div class="control-group">
+            <div class="control-label">
+                <span>VOLUME</span>
+                <span class="volume-value" id="volumeValue">50%</span>
+            </div>
+            <input type="range" min="0" max="100" value="50" class="volume-slider" id="volumeSlider">
+        </div>
+        
+        <div class="control-group" style="flex-direction: row; gap: 10px;">
+            <button class="control-btn mute-btn" id="muteBtn">Mute</button>
+            <button class="control-btn" id="pauseBtn">Pause</button>
+            <button class="control-btn" id="fireworkBtn">Launch</button>
+        </div>
+        
+        <div class="control-group">
+            <button class="control-btn" id="testSoundBtn">Test Sound</button>
+        </div>
+    </div>
+    
+    <!-- Sound Wave Visualizer -->
+    <div class="sound-wave" id="soundWave">
+        <div class="wave-bar" style="left: 0%; animation-delay: 0s;"></div>
+        <div class="wave-bar" style="left: 10%; animation-delay: 0.1s;"></div>
+        <div class="wave-bar" style="left: 20%; animation-delay: 0.2s;"></div>
+        <div class="wave-bar" style="left: 30%; animation-delay: 0.3s;"></div>
+        <div class="wave-bar" style="left: 40%; animation-delay: 0.4s;"></div>
+        <div class="wave-bar" style="left: 50%; animation-delay: 0.5s;"></div>
+        <div class="wave-bar" style="left: 60%; animation-delay: 0.6s;"></div>
+        <div class="wave-bar" style="left: 70%; animation-delay: 0.7s;"></div>
+        <div class="wave-bar" style="left: 80%; animation-delay: 0.8s;"></div>
+        <div class="wave-bar" style="left: 90%; animation-delay: 0.9s;"></div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="content">
+        <div id="timer" role="timer" aria-live="assertive">5</div>
+        <div id="message" aria-live="polite" style="display: none;">
+            <h1 aria-label="Happy New Year 2026">2026</h1>
+            <div id="typewriter-text"></div>
+        </div>
+    </div>
+    
+    <!-- Signature -->
+    <div class="signature">
+        GREETINGS FROM:
+        <span>DAVID GODSPOWER AJALA D.G.A.</span>
+    </div>
+    
+    <!-- Canvas for Fireworks -->
+    <canvas id="canvas"></canvas>
+
+    <script>
+        // ====================
+        // INITIALIZATION
+        // ====================
+        
+        // DOM Elements Cache
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const timerElement = document.getElementById('timer');
+        const messageElement = document.getElementById('message');
+        const typeSpan = document.getElementById('typewriter-text');
+        const loadingElement = document.getElementById('loading');
+        const loadingProgress = document.getElementById('loadingProgress');
+        const controlsPanel = document.getElementById('controlsPanel');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const fireworkBtn = document.getElementById('fireworkBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeValue = document.getElementById('volumeValue');
+        const muteBtn = document.getElementById('muteBtn');
+        const testSoundBtn = document.getElementById('testSoundBtn');
+        const soundWave = document.getElementById('soundWave');
+        
+        // Audio System
+        let audioContext;
+        let masterGain;
+        let isAudioInitialized = false;
+        let isMuted = false;
+        let volume = 0.5; // Default 50% volume (0.0 to 1.0)
+        
+        // State Management
+        let width, height;
+        let fireworksEnabled = false;
+        let timeLeft = 5;
+        let isPaused = false;
+        let countdownInterval;
+        let animationFrameId;
+        
+        // Performance Settings
+        const MAX_PARTICLES = 1500;
+        const PARTICLES_PER_FIREWORK = 80;
+        const TRAIL_LENGTH = 8;
+        
+        // Color Palettes
+        const colorPalettes = [
+            [0, 60, 120, 180, 240, 300],    // Full rainbow
+            [120, 180, 240],                 // Cool colors
+            [0, 30, 60],                     // Warm colors
+            [270, 300, 330]                  // Purple/magenta
+        ];
+        
+        // Sound Types
+        const SOUND_TYPES = {
+            EXPLOSION: 'explosion',
+            COUNTDOWN: 'countdown',
+            LAUNCH: 'launch',
+            SUCCESS: 'success',
+            GLITCH: 'glitch'
+        };
+        
+        // Typewriter Messages
+        const phrases = [
+            "HAPPY NEW YEAR 2026",
+            "FROM DAVID GODSPOWER AJALA",
+            "D.G.A. WISHES YOU SUCCESS",
+            "THE FUTURE IS BRIGHT",
+            "WELCOME TO THE NEW ERA",
+            "MAY ALL YOUR DREAMS COME TRUE",
+            "PROSPERITY AND JOY AWAIT",
+            "2025 WAS GOOD 2026 WILL BE BETTER",
+            "SUPERNATURL ADVANCEMENT",
+            "CELEBRATE NEW BEGINNINGS"
+        ];
+        
+        // ====================
+        // AUDIO SYSTEM
+        // ====================
+        
+        function initAudioSystem() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                masterGain = audioContext.createGain();
+                masterGain.connect(audioContext.destination);
+                masterGain.gain.value = volume;
+                
+                isAudioInitialized = true;
+                console.log("Audio system initialized");
+                updateVolumeDisplay();
+                return true;
+            } catch (error) {
+                console.warn("Audio system initialization failed:", error);
+                isAudioInitialized = false;
+                return false;
+            }
+        }
+        
+        function setVolume(newVolume) {
+            volume = Math.max(0, Math.min(1, newVolume));
+            
+            if (isAudioInitialized && masterGain) {
+                // Smooth volume transition
+                masterGain.gain.setTargetAtTime(volume, audioContext.currentTime, 0.1);
+            }
+            
+            updateVolumeDisplay();
+            
+            // Visual feedback
+            volumeSlider.value = volume * 100;
+            volumeValue.textContent = `${Math.round(volume * 100)}%`;
+            
+            // Show sound wave when adjusting volume
+            if (!isMuted) {
+                showSoundWave();
+                playSound(SOUND_TYPES.COUNTDOWN, 0.3);
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('newYearVolume', volume);
+        }
+        
+        function toggleMute() {
+            isMuted = !isMuted;
+            
+            if (isAudioInitialized && masterGain) {
+                if (isMuted) {
+                    masterGain.gain.setTargetAtTime(0, audioContext.currentTime, 0.1);
+                } else {
+                    masterGain.gain.setTargetAtTime(volume, audioContext.currentTime, 0.1);
+                }
+            }
+            
+            // Update button
+            muteBtn.textContent = isMuted ? "Unmute" : "Mute";
+            muteBtn.classList.toggle('active', !isMuted);
+            
+            // Visual feedback
+            if (!isMuted) {
+                playSound(SOUND_TYPES.SUCCESS, 0.5);
+                showSoundWave();
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('newYearMuted', isMuted);
+        }
+        
+        function updateVolumeDisplay() {
+            volumeValue.textContent = `${Math.round(volume * 100)}%`;
+            volumeSlider.value = volume * 100;
+        }
+        
+        function showSoundWave() {
+            soundWave.style.display = 'block';
+            setTimeout(() => {
+                soundWave.style.display = 'none';
+            }, 1000);
+        }
+        
+        // Sound Generators
+        function createExplosionSound(gainValue = volume) {
+            if (!isAudioInitialized || isMuted || isPaused) return null;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            const filter = audioContext.createBiquadFilter();
+            
+            oscillator.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(masterGain);
+            
+            // Explosion characteristics
+            oscillator.type = 'sawtooth';
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(1000, audioContext.currentTime);
+            filter.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.8);
+            
+            oscillator.frequency.setValueAtTime(random(150, 250), audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(30, audioContext.currentTime + 0.5);
+            
+            gainNode.gain.setValueAtTime(gainValue * 0.8, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.8);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.8);
+            
+            return { oscillator, gainNode };
+        }
+        
+        function createLaunchSound(gainValue = volume) {
+            if (!isAudioInitialized || isMuted || isPaused) return null;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(masterGain);
+            
+            // Launch whistle sound
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + 0.5);
+            
+            gainNode.gain.setValueAtTime(gainValue * 0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.6);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.6);
+            
+            return { oscillator, gainNode };
+        }
+        
+        function createCountdownSound(gainValue = volume) {
+            if (!isAudioInitialized || isMuted || isPaused) return null;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(masterGain);
+            
+            // Beep sound
+            oscillator.type = 'square';
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            
+            gainNode.gain.setValueAtTime(gainValue * 0.4, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(gainValue * 0.4, audioContext.currentTime + 0.1);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.15);
+            
+            return { oscillator, gainNode };
+        }
+        
+        function createSuccessSound(gainValue = volume) {
+            if (!isAudioInitialized || isMuted || isPaused) return null;
+            
+            const now = audioContext.currentTime;
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(masterGain);
+            
+            // Success chime
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(523.25, now); // C5
+            oscillator.frequency.setValueAtTime(659.25, now + 0.1); // E5
+            oscillator.frequency.setValueAtTime(783.99, now + 0.2); // G5
+            
+            gainNode.gain.setValueAtTime(0, now);
+            gainNode.gain.linearRampToValueAtTime(gainValue * 0.5, now + 0.05);
+            gainNode.gain.setValueAtTime(gainValue * 0.5, now + 0.25);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+            
+            oscillator.start();
+            oscillator.stop(now + 0.35);
+            
+            return { oscillator, gainNode };
+        }
+        
+        function createGlitchSound(gainValue = volume) {
+            if (!isAudioInitialized || isMuted || isPaused) return null;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(masterGain);
+            
+            // Glitch/static sound
+            oscillator.type = 'square';
+            
+            // Random frequency changes for glitch effect
+            const now = audioContext.currentTime;
+            for (let i = 0; i < 5; i++) {
+                oscillator.frequency.setValueAtTime(random(100, 1000), now + (i * 0.05));
+            }
+            
+            gainNode.gain.setValueAtTime(gainValue * 0.3, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+            
+            oscillator.start();
+            oscillator.stop(now + 0.3);
+            
+            return { oscillator, gainNode };
+        }
+        
+        function playSound(type, customVolume = null) {
+            if (!isAudioInitialized || isMuted || isPaused) return null;
+            
+            const gainValue = customVolume !== null ? customVolume : volume;
+            
+            switch(type) {
+                case SOUND_TYPES.EXPLOSION:
+                    return createExplosionSound(gainValue);
+                case SOUND_TYPES.LAUNCH:
+                    return createLaunchSound(gainValue);
+                case SOUND_TYPES.COUNTDOWN:
+                    return createCountdownSound(gainValue);
+                case SOUND_TYPES.SUCCESS:
+                    return createSuccessSound(gainValue);
+                case SOUND_TYPES.GLITCH:
+                    return createGlitchSound(gainValue);
+                default:
+                    return createExplosionSound(gainValue);
+            }
+        }
+        
+        function testSound() {
+            if (!isAudioInitialized) {
+                showNotification("Audio system not initialized");
+                return;
+            }
+            
+            // Play test sequence
+            playSound(SOUND_TYPES.COUNTDOWN, volume * 0.3);
+            setTimeout(() => playSound(SOUND_TYPES.LAUNCH, volume * 0.5), 200);
+            setTimeout(() => playSound(SOUND_TYPES.EXPLOSION, volume * 0.7), 600);
+            setTimeout(() => playSound(SOUND_TYPES.SUCCESS, volume * 0.6), 1000);
+            
+            showSoundWave();
+            showNotification("Test sound sequence playing");
+        }
+        
+        // ====================
+        // UTILITY FUNCTIONS
+        // ====================
+        
+        function random(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+        
+        function getRandomHue() {
+            const palette = colorPalettes[Math.floor(Math.random() * colorPalettes.length)];
+            return palette[Math.floor(Math.random() * palette.length)];
+        }
+        
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        
+        // ====================
+        // CLASSES
+        // ====================
+        
+        class Firework {
+            constructor(x = null, y = null) {
+                this.x = x || random(width * 0.1, width * 0.9);
+                this.y = y || height;
+                this.targetY = random(height * 0.1, height * 0.4);
+                this.speed = random(8, 13);
+                this.hue = getRandomHue();
+                this.dead = false;
+                this.trail = [];
+                this.trailLength = TRAIL_LENGTH;
+                this.size = random(2, 4);
+                this.hasPlayedLaunchSound = false;
+            }
+            
+            update() {
+                if (isPaused) return;
+                
+                // Play launch sound once
+                if (!this.hasPlayedLaunchSound && this.y < height * 0.9) {
+                    playSound(SOUND_TYPES.LAUNCH, volume * 0.4);
+                    this.hasPlayedLaunchSound = true;
+                }
+                
+                // Add to trail
+                this.trail.push({ x: this.x, y: this.y });
+                if (this.trail.length > this.trailLength) {
+                    this.trail.shift();
+                }
+                
+                // Update position
+                this.y -= this.speed;
+                this.speed *= 0.98;
+                
+                // Check if should explode
+                if (this.y <= this.targetY || this.speed <= 1) {
+                    this.dead = true;
+                    this.explode();
+                }
+            }
+            
+            draw() {
+                // Draw trail
+                if (this.trail.length > 1) {
+                    ctx.beginPath();
+                    ctx.moveTo(this.trail[0].x, this.trail[0].y);
+                    for (let i = 1; i < this.trail.length; i++) {
+                        ctx.lineTo(this.trail[i].x, this.trail[i].y);
+                    }
+                    ctx.strokeStyle = `hsla(${this.hue}, 100%, 50%, 0.5)`;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+                
+                // Draw firework
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `hsl(${this.hue}, 100%, 50%)`;
+                ctx.fill();
+                
+                // Glow effect
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
+                ctx.fillStyle = `hsla(${this.hue}, 100%, 50%, 0.3)`;
+                ctx.fill();
+            }
+            
+            explode() {
+                // Limit particles for performance
+                const particleCount = Math.min(PARTICLES_PER_FIREWORK, 
+                    MAX_PARTICLES - particles.length);
+                
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push(new Particle(this.x, this.y, this.hue));
+                }
+                
+                // Play explosion sound
+                playSound(SOUND_TYPES.EXPLOSION, volume * 0.7);
+            }
+        }
+        
+        class Particle {
+            constructor(x, y, hue) {
+                this.x = x;
+                this.y = y;
+                this.hue = hue;
+                const angle = random(0, Math.PI * 2);
+                const velocity = random(1, 10);
+                this.vx = Math.cos(angle) * velocity;
+                this.vy = Math.sin(angle) * velocity;
+                this.alpha = 1;
+                this.decay = random(0.015, 0.03);
+                this.size = random(1, 3);
+                this.gravity = 0.05;
+            }
+            
+            update() {
+                if (isPaused) return;
+                
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += this.gravity;
+                this.vx *= 0.95;
+                this.vy *= 0.95;
+                this.alpha -= this.decay;
+            }
+            
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `hsl(${this.hue}, 100%, 60%)`;
+                ctx.fill();
+                
+                // Sparkle effect for some particles
+                if (Math.random() > 0.7) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size * 1.5, 0, Math.PI * 2);
+                    ctx.fillStyle = `hsla(${this.hue}, 100%, 80%, 0.3)`;
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
+        }
+        
+        // ====================
+        // CORE FUNCTIONALITY
+        // ====================
+        
+        // Fireworks System
+        const particles = [];
+        const fireworks = [];
+        
+        function launchFirework(x = null, y = null) {
+            if (fireworks.length < 20) { // Limit concurrent fireworks
+                fireworks.push(new Firework(x, y));
+            }
+        }
+        
+        // Typewriter Effect
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typeSpeed = 100;
+        
+        function typeWriterLoop() {
+            if (isPaused) {
+                setTimeout(typeWriterLoop, 100);
+                return;
+            }
+            
+            const currentPhrase = phrases[phraseIndex];
+            
+            if (isDeleting) {
+                typeSpan.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+                typeSpeed = 50;
+            } else {
+                typeSpan.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+                typeSpeed = 100;
+            }
+            
+            // Play glitch sound occasionally during typing
+            if (Math.random() < 0.05 && charIndex > 3) {
+                playSound(SOUND_TYPES.GLITCH, volume * 0.2);
+            }
+            
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                isDeleting = true;
+                typeSpeed = 2000;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500;
+            }
+            
+            setTimeout(typeWriterLoop, typeSpeed);
+        }
+        
+        // Countdown System with Sound
+        function startCountdown() {
+            clearInterval(countdownInterval);
+            timeLeft = 5;
+            timerElement.textContent = timeLeft;
+            
+            countdownInterval = setInterval(() => {
+                if (isPaused) return;
+                
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+                
+                // Visual feedback
+                timerElement.style.color = "#fff";
+                timerElement.style.animation = "pulse 0.5s ease";
+                
+                // Play countdown sound
+                if (timeLeft > 0 && timeLeft <= 5) {
+                    playSound(SOUND_TYPES.COUNTDOWN, volume * 0.4);
+                }
+                
+                setTimeout(() => {
+                    timerElement.style.color = "#333";
+                    timerElement.style.animation = "";
+                }, 100);
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    playSound(SOUND_TYPES.SUCCESS, volume * 0.8);
+                    startCelebration();
+                }
+            }, 1000);
+        }
+        
+        function startCelebration() {
+            timerElement.style.display = 'none';
+            messageElement.style.display = 'block';
+            fireworksEnabled = true;
+            controlsPanel.style.display = 'flex';
+            
+            // Launch initial volley
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => launchFirework(), i * 120);
+            }
+            
+            // Start typewriter
+            typeWriterLoop();
+            
+            // Show celebration message
+            showNotification("Happy New Year 2026!");
+            
+            // Play glitch sound for the 2026 text
+            setTimeout(() => playSound(SOUND_TYPES.GLITCH, volume * 0.6), 500);
+        }
+        
+        // ====================
+        // CONTROLS & INTERACTION
+        // ====================
+        
+        function togglePause() {
+            isPaused = !isPaused;
+            pauseBtn.textContent = isPaused ? "Resume" : "Pause";
+            
+            if (!isPaused && fireworksEnabled) {
+                loop();
+                playSound(SOUND_TYPES.SUCCESS, volume * 0.3);
+            } else if (isPaused) {
+                playSound(SOUND_TYPES.GLITCH, volume * 0.2);
+            }
+            
+            showNotification(isPaused ? "Paused" : "Resumed");
+        }
+        
+        function manualFireworkLaunch() {
+            if (fireworksEnabled) {
+                launchFirework();
+                showNotification("Firework launched!");
+            }
+        }
+        
+        // ====================
+        // RENDERING LOOP
+        // ====================
+        
+        function loop() {
+            if (isPaused) return;
+            
+            // Clear with fade effect
+            ctx.fillStyle = 'rgba(2, 2, 5, 0.15)';
+            ctx.fillRect(0, 0, width, height);
+            
+            // Auto-launch fireworks
+            if (fireworksEnabled && Math.random() < 0.08 && fireworks.length < 15) {
+                launchFirework();
+            }
+            
+            // Update and draw fireworks
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                fireworks[i].update();
+                fireworks[i].draw();
+                if (fireworks[i].dead) {
+                    fireworks.splice(i, 1);
+                }
+            }
+            
+            // Update and draw particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].alpha <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+            
+            // Draw connection lines between close particles (optional effect)
+            if (particles.length > 0 && Math.random() > 0.5) {
+                drawParticleConnections();
+            }
+            
+            animationFrameId = requestAnimationFrame(loop);
+        }
+        
+        function drawParticleConnections() {
+            const maxDistance = 100;
+            
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < maxDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `hsla(${particles[i].hue}, 70%, 50%, ${0.2 * (1 - distance/maxDistance)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+        
+        // ====================
+        // EVENT HANDLERS
+        // ====================
+        
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        
+        // Click/Tap to launch fireworks
+        window.addEventListener('mousedown', (e) => {
+            if (fireworksEnabled) {
+                launchFirework(e.clientX, e.clientY);
+            }
+        });
+        
+        window.addEventListener('touchstart', (e) => {
+            if (fireworksEnabled && e.touches.length > 0) {
+                const touch = e.touches[0];
+                launchFirework(touch.clientX, touch.clientY);
+                e.preventDefault(); // Prevent scrolling
+            }
+        }, { passive: false });
+        
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            switch(e.code) {
+                case 'Space':
+                    togglePause();
+                    break;
+                case 'KeyF':
+                    if (fireworksEnabled) manualFireworkLaunch();
+                    break;
+                case 'KeyR':
+                    resetCelebration();
+                    break;
+                case 'KeyM':
+                    toggleMute();
+                    break;
+                case 'ArrowUp':
+                    setVolume(volume + 0.1);
+                    break;
+                case 'ArrowDown':
+                    setVolume(volume - 0.1);
+                    break;
+                case 'Escape':
+                    if (isPaused) togglePause();
+                    break;
+            }
+        });
+        
+        // Control button handlers
+        pauseBtn.addEventListener('click', togglePause);
+        fireworkBtn.addEventListener('click', manualFireworkLaunch);
+        muteBtn.addEventListener('click', toggleMute);
+        testSoundBtn.addEventListener('click', testSound);
+        
+        // Volume slider
+        volumeSlider.addEventListener('input', (e) => {
+            setVolume(e.target.value / 100);
+        });
+        
+        volumeSlider.addEventListener('change', (e) => {
+            setVolume(e.target.value / 100);
+        });
+        
+        // ====================
+        // HELPER FUNCTIONS
+        // ====================
+        
+        function showNotification(text) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.textContent = text;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20%;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 255, 255, 0.2);
+                color: #0ff;
+                padding: 10px 20px;
+                border-radius: 5px;
+                border: 1px solid #0ff;
+                z-index: 1000;
+                font-family: 'Courier New', monospace;
+                font-weight: bold;
+                backdrop-filter: blur(5px);
+                animation: fadeInOut 2s ease;
+            `;
+            
+            // Add styles for animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeInOut {
+                    0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+                    10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+                    90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+                    100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(notification);
+            
+            // Remove after animation
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 2000);
+        }
+        
+        function resetCelebration() {
+            // Clear everything
+            fireworks.length = 0;
+            particles.length = 0;
+            isPaused = false;
+            fireworksEnabled = false;
+            
+            // Reset display
+            timerElement.style.display = 'block';
+            messageElement.style.display = 'none';
+            controlsPanel.style.display = 'none';
+            pauseBtn.textContent = "Pause";
+            
+            // Restart countdown
+            startCountdown();
+            
+            showNotification("Celebration reset!");
+            playSound(SOUND_TYPES.GLITCH, volume * 0.5);
+        }
+        
+        // ====================
+        // INITIALIZATION
+        // ====================
+        
+        function initializeCelebration() {
+            // Simulate loading progress
+            let progress = 0;
+            const loadingInterval = setInterval(() => {
+                progress += 5;
+                loadingProgress.style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(loadingInterval);
+                    
+                    // Initialize audio system
+                    initAudioSystem();
+                    
+                    // Load saved settings
+                    const savedVolume = localStorage.getItem('newYearVolume');
+                    const savedMuted = localStorage.getItem('newYearMuted');
+                    
+                    if (savedVolume !== null) {
+                        setVolume(parseFloat(savedVolume));
+                    }
+                    
+                    if (savedMuted !== null) {
+                        isMuted = savedMuted === 'true';
+                        if (isMuted && isAudioInitialized && masterGain) {
+                            masterGain.gain.value = 0;
+                        }
+                        muteBtn.textContent = isMuted ? "Unmute" : "Mute";
+                        muteBtn.classList.toggle('active', !isMuted);
+                    }
+                    
+                    // Hide loading screen
+                    setTimeout(() => {
+                        loadingElement.style.opacity = '0';
+                        loadingElement.style.transition = 'opacity 0.5s ease';
+                        
+                        setTimeout(() => {
+                            loadingElement.style.display = 'none';
+                            startCountdown();
+                            loop();
+                            
+                            // Show welcome notification
+                            setTimeout(() => {
+                                showNotification("Use arrow keys for volume control");
+                            }, 1000);
+                        }, 500);
+                    }, 500);
+                }
+            }, 150);
+        }
+        
+        window.addEventListener('load', initializeCelebration);
+        
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            clearInterval(countdownInterval);
+            cancelAnimationFrame(animationFrameId);
+            fireworks.length = 0;
+            particles.length = 0;
+            
+            // Save settings
+            localStorage.setItem('newYearVolume', volume);
+            localStorage.setItem('newYearMuted', isMuted);
+        });
+        
+        // Instructions
+        console.log(`
+        === NEW YEAR 2026 CELEBRATION ===
+        Audio Controls:
+        - Volume Slider: Adjust sound volume
+        - Mute Button: Toggle sound on/off
+        - Test Sound: Play test sequence
+        
+        Celebration Controls:
+        - Click/Tap: Launch fireworks
+        - Space: Pause/Resume
+        - F: Launch random firework
+        - R: Reset celebration
+        - M: Mute/Unmute sound
+        - Arrow Up/Down: Adjust volume
+        - Escape: Resume if paused
+        
+        Created by: David Godspower Ajala (D.G.A.)
+        Happy New Year 2026!
+        `);
+        
+    </script>
+</body>
+</html>
