@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy New Year 2026 - Greetings from D.G.A.</title>
     <style>
-        /* --- RESET & BASE STYLES --- */
         * {
             margin: 0;
             padding: 0;
@@ -34,7 +33,6 @@
             display: block;
         }
         
-        /* --- ACCESSIBILITY --- */
         .skip-link {
             position: absolute;
             top: -40px;
@@ -52,7 +50,7 @@
             outline: 2px solid #0ff;
         }
         
-        /* --- CONTENT AREA --- */
+       
         .content {
             position: relative;
             z-index: 10;
@@ -62,7 +60,6 @@
             padding: 20px;
         }
         
-        /* --- COUNTDOWN TIMER --- */
         #timer {
             font-size: 20vw;
             font-weight: bold;
@@ -71,7 +68,6 @@
             transition: color 0.1s ease;
         }
         
-        /* --- MAIN MESSAGE --- */
         #message {
             display: none;
         }
@@ -86,7 +82,6 @@
             line-height: 1.5;
         }
         
-        /* --- TYPEWRITER EFFECT --- */
         #typewriter-text {
             font-size: 1.8rem;
             color: #0f0;
@@ -101,7 +96,6 @@
             font-weight: bold;
         }
         
-        /* --- SIGNATURE --- */
         .signature {
             position: absolute;
             bottom: 40px;
@@ -123,8 +117,7 @@
             margin-top: 5px;
             font-size: 1.5rem;
         }
-        
-        /* --- CONTROLS PANEL --- */
+
         .controls-panel {
             position: fixed;
             top: 20px;
@@ -161,7 +154,6 @@
             font-size: 0.8rem;
         }
         
-        /* --- VOLUME SLIDER --- */
         .volume-slider {
             width: 100%;
             height: 25px;
@@ -194,8 +186,6 @@
             cursor: pointer;
             box-shadow: 0 0 10px #0ff;
         }
-        
-        /* --- CONTROL BUTTONS --- */
         .control-btn {
             padding: 10px 15px;
             background: rgba(0, 255, 255, 0.2);
@@ -238,7 +228,7 @@
             color: #0f0;
         }
         
-        /* --- ANIMATIONS --- */
+       
         @keyframes blink {
             from, to { border-color: transparent; }
             50% { border-color: #0f0; }
@@ -264,7 +254,6 @@
             to { transform: translateX(0); opacity: 1; }
         }
         
-        /* --- SOUND WAVE VISUALIZER --- */
         .sound-wave {
             display: none;
             position: fixed;
@@ -291,7 +280,6 @@
             50% { height: 40px; }
         }
         
-        /* --- RESPONSIVE DESIGN --- */
         @media (max-width: 768px) {
             #timer {
                 font-size: 25vw;
@@ -365,7 +353,6 @@
             }
         }
         
-        /* --- LOADING STATE --- */
         .loading {
             position: fixed;
             top: 0;
@@ -401,10 +388,8 @@
     </style>
 </head>
 <body>
-    <!-- Accessibility -->
     <a href="#message" class="skip-link">Skip to main content</a>
     
-    <!-- Loading Screen -->
     <div class="loading" id="loading">
         <div>Initializing Celebration...</div>
         <div class="loading-bar">
@@ -412,7 +397,6 @@
         </div>
     </div>
     
-    <!-- Controls Panel -->
     <div class="controls-panel" id="controlsPanel" style="display: none;">
         <div class="control-group">
             <div class="control-label">
@@ -433,7 +417,6 @@
         </div>
     </div>
     
-    <!-- Sound Wave Visualizer -->
     <div class="sound-wave" id="soundWave">
         <div class="wave-bar" style="left: 0%; animation-delay: 0s;"></div>
         <div class="wave-bar" style="left: 10%; animation-delay: 0.1s;"></div>
@@ -447,7 +430,6 @@
         <div class="wave-bar" style="left: 90%; animation-delay: 0.9s;"></div>
     </div>
     
-    <!-- Main Content -->
     <div class="content">
         <div id="timer" role="timer" aria-live="assertive">5</div>
         <div id="message" aria-live="polite" style="display: none;">
@@ -456,21 +438,15 @@
         </div>
     </div>
     
-    <!-- Signature -->
+   
     <div class="signature">
         GREETINGS FROM:
         <span>DAVID GODSPOWER AJALA D.G.A.</span>
     </div>
     
-    <!-- Canvas for Fireworks -->
     <canvas id="canvas"></canvas>
 
     <script>
-        // ====================
-        // INITIALIZATION
-        // ====================
-        
-        // DOM Elements Cache
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const timerElement = document.getElementById('timer');
@@ -487,14 +463,11 @@
         const testSoundBtn = document.getElementById('testSoundBtn');
         const soundWave = document.getElementById('soundWave');
         
-        // Audio System
         let audioContext;
         let masterGain;
         let isAudioInitialized = false;
         let isMuted = false;
-        let volume = 0.5; // Default 50% volume (0.0 to 1.0)
-        
-        // State Management
+        let volume = 0.5;
         let width, height;
         let fireworksEnabled = false;
         let timeLeft = 5;
